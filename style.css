@@ -1,22 +1,21 @@
 :root {
-  --bg: #0b0f1a;
-  --card: #121829;
-  --card2: #1a2238;
-  --border: #1f2a44;
+  --bg: #000000;
+  --card: #111111;
+  --card2: #1a1a1a;
+  --border: #222222;
   --text: #ffffff;
-  --muted: #9aa4c7;
+  --muted: #9a9a9a;
 
-  --primary: #e50914;     /* rojo streaming */
-  --electric: #00e5ff;    /* azul eléctrico */
-  --neon: #9d4edd;        /* morado neón */
-  --highlight: #ffd60a;   /* amarillo spotlight */
+  --primary: #e50914;      /* rojo principal */
+  --primaryGlow: #ff1e2d;  /* rojo brillante hover */
+  --accentSoft: #2a2a2a;
 
   font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 }
 
 body {
   margin: 0;
-  background: radial-gradient(circle at top, #141b34 0%, #0b0f1a 60%);
+  background: var(--bg);
   color: var(--text);
 }
 
@@ -30,9 +29,7 @@ body {
 
 h1 {
   font-size: 2rem;
-  background: linear-gradient(90deg, var(--primary), var(--neon));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--primary);
   margin-bottom: 5px;
 }
 
@@ -52,21 +49,20 @@ h1 {
 }
 
 /* =========================
-   CARDS SUAVES + GLOW
+   CARDS SUAVES
    ========================= */
 
 .card {
-  background: linear-gradient(145deg, #121829, #0f1424);
+  background: var(--card);
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: 22px;
-  box-shadow: 0 0 20px rgba(157,78,221,.15);
-  transition: 0.3s ease;
+  transition: 0.25s ease;
 }
 
 .card:hover {
-  box-shadow: 0 0 30px rgba(0,229,255,.25);
-  border-color: var(--electric);
+  border-color: var(--primary);
+  box-shadow: 0 0 20px rgba(229,9,20,.3);
 }
 
 /* =========================
@@ -76,7 +72,7 @@ h1 {
 label {
   display: block;
   font-size: 0.85rem;
-  color: var(--electric);
+  color: var(--primary);
   margin-top: 15px;
   font-weight: 600;
 }
@@ -94,8 +90,8 @@ select {
 }
 
 select:focus {
-  border-color: var(--neon);
-  box-shadow: 0 0 10px rgba(157,78,221,.5);
+  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(229,9,20,.4);
 }
 
 /* =========================
@@ -119,23 +115,24 @@ button {
 }
 
 .primary:hover {
+  background: var(--primaryGlow);
   transform: scale(1.05);
-  box-shadow: 0 0 25px rgba(229,9,20,.9);
+  box-shadow: 0 0 25px rgba(255,30,45,.8);
 }
 
 .ghost {
   background: transparent;
-  border: 1px solid var(--electric);
-  color: var(--electric);
+  border: 1px solid var(--primary);
+  color: var(--primary);
 }
 
 .ghost:hover {
-  background: var(--electric);
-  color: black;
+  background: var(--primary);
+  color: white;
 }
 
 .danger {
-  background: #ff0054;
+  background: #7a0000;
   color: white;
 }
 
@@ -153,7 +150,7 @@ button {
 .question {
   font-size: 0.9rem;
   margin-bottom: 12px;
-  color: var(--highlight);
+  color: var(--primary);
 }
 
 .duel {
@@ -170,13 +167,12 @@ button {
   text-align: center;
   font-size: 0.9rem;
   transition: 0.25s ease;
-  position: relative;
 }
 
 .pick:hover {
   transform: translateY(-4px);
-  border-color: var(--electric);
-  box-shadow: 0 0 20px rgba(0,229,255,.4);
+  border-color: var(--primary);
+  box-shadow: 0 0 20px rgba(229,9,20,.4);
 }
 
 .tag {
@@ -206,7 +202,7 @@ button {
 }
 
 .toprow:hover {
-  background: rgba(0,229,255,.08);
+  background: rgba(229,9,20,.1);
 }
 
 .toprow:last-child {
@@ -214,7 +210,7 @@ button {
 }
 
 .toprow b {
-  color: var(--highlight);
+  color: var(--primary);
 }
 
 /* =========================
