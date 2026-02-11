@@ -1,5 +1,5 @@
 // =====================
-// 1) Datos
+// 1) DATOS
 // =====================
 
 const series = [
@@ -16,18 +16,17 @@ const series = [
 ];
 
 const segmentos = {
-  "J": "Jóvenes (13–20)",
-  "A": "Adultos (21–35)",
-  "M": "Mayores (36+)",
-  "F": "Fanáticos de Fantasía/Ciencia ficción",
-  "D": "Fanáticos de Drama",
-  "C": "Fanáticos de Comedia"
+  "J": "Jóvenes",
+  "A": "Adultos",
+  "F": "Fans de Fantasía",
+  "D": "Fans de Drama",
+  "C": "Fans de Comedia"
 };
 
 const contextos = {
   "M": "¿Cuál recomiendas más para maratonear?",
   "H": "¿Cuál tiene mejor historia?",
-  "E": "¿Cuál recomendarías a un amigo?"
+  "R": "¿Cuál recomendarías a un amigo?"
 };
 
 // Elo
@@ -35,13 +34,14 @@ const RATING_INICIAL = 1000;
 const K = 32;
 
 // =====================
-// Estado
+// 2) ESTADO + STORAGE
 // =====================
 
-const STORAGE_KEY = "seriesmash_state_v1";
+const STORAGE_KEY = "seriesmash_state_v2";
 
 function defaultState(){
   const buckets = {};
+
   for (const seg of Object.keys(segmentos)){
     for (const ctx of Object.keys(contextos)){
       const key = `${seg}__${ctx}`;
@@ -49,6 +49,7 @@ function defaultState(){
       series.forEach(s => buckets[key][s] = RATING_INICIAL);
     }
   }
+
   return { buckets, votes: [] };
 }
 
@@ -66,7 +67,7 @@ function saveState(){
 let state = loadState();
 
 // =====================
-// Elo
+// 3) ELO
 // =====================
 
 function expectedScore(ra, rb){
@@ -74,7 +75,9 @@ function expectedScore(ra, rb){
 }
 
 function updateElo(bucket, a, b, winner){
-  const ra = bucket[a], rb = bucket[b];
+  const ra = bucket[a];
+  const rb = bucket[b];
+
   const ea = expectedScore(ra, rb);
   const eb = expectedScore(rb, ra);
 
@@ -88,22 +91,29 @@ function updateElo(bucket, a, b, winner){
 function randomPair(){
   const a = series[Math.floor(Math.random() * series.length)];
   let b = a;
+
   while (b === a){
     b = series[Math.floor(Math.random() * series.length)];
   }
+
   return [a, b];
 }
 
-function bucketKey(seg, ctx){ return `${seg}__${ctx}`; }
+function bucketKey(seg, ctx){
+  return `${seg}__${ctx}`;
+}
 
-function topN(bucket, n=10){
-  const arr = Object.entries(bucket).map(([serie, rating]) => ({serie, rating}));
+function topN(bucket, n = 10){
+  const arr = Object.entries(bucket)
+    .map(([serie, rating]) => ({ serie, rating }));
+
   arr.sort((x,y) => y.rating - x.rating);
+
   return arr.slice(0, n);
 }
 
 // =====================
-// UI
+// 4) UI
 // =====================
 
 const segmentSelect = document.getElementById("segmentSelect");
@@ -122,6 +132,7 @@ const btnExport = document.getElementById("btnExport");
 let currentA = null;
 let currentB = null;
 
+// llenar selects
 function fillSelect(selectEl, obj){
   selectEl.innerHTML = "";
   for (const [k, v] of Object.entries(obj)){
@@ -134,6 +145,10 @@ function fillSelect(selectEl, obj){
 
 fillSelect(segmentSelect, segmentos);
 fillSelect(contextSelect, contextos);
+
+// =====================
+// 5) FUNCIONES UI
+// =====================
 
 function refreshQuestion(){
   questionEl.textContent = contextos[contextSelect.value];
@@ -152,15 +167,21 @@ function renderTop(){
   const bucket = state.buckets[bucketKey(seg, ctx)];
 
   const rows = topN(bucket, 10);
+
   topBox.innerHTML = rows.map((r, idx) => `
     <div class="toprow">
-      <div><b>${idx+1}.</b> ${r.serie}</div>
+      <div><b>${idx + 1}.</b> ${r.serie}</div>
       <div>${r.rating.toFixed(1)}</div>
     </div>
   `).join("");
 }
 
+// =====================
+// 6) VOTAR
+// =====================
+
 function vote(winner){
+
   const seg = segmentSelect.value;
   const ctx = contextSelect.value;
   const key = bucketKey(seg, ctx);
@@ -182,22 +203,10 @@ function vote(winner){
   newDuel();
 }
 
-btnA.addEventListener("click", () => vote("A"));
-btnB.addEventListener("click", () => vote("B"));
-btnNewPair.addEventListener("click", newDuel);
-btnShowTop.addEventListener("click", renderTop);
+// =====================
+// 7) EXPORTAR CSV
+// =====================
 
-btnReset.addEventListener("click", () => {
-  if (!confirm("¿Borrar rankings?")) return;
-  state = defaultState();
-  saveState();
-  renderTop();
-  newDuel();
-});
-
-newDuel();
-renderTop();
-refreshQuestion();
 btnExport.addEventListener("click", () => {
 
   if (state.votes.length === 0){
@@ -216,7 +225,10 @@ btnExport.addEventListener("click", () => {
     lines.push(row);
   }
 
-  const blob = new Blob([lines.join("\n")], {type: "text/csv;charset=utf-8;"});
+  const blob = new Blob([lines.join("\n")], {
+    type: "text/csv;charset=utf-8;"
+  });
+
   const url = URL.createObjectURL(blob);
 
   const a = document.createElement("a");
@@ -228,3 +240,38 @@ btnExport.addEventListener("click", () => {
 
   URL.revokeObjectURL(url);
 });
+
+// =====================
+// 8) EVENTOS
+// =====================
+
+btnA.addEventListener("click", () => vote("A"));
+btnB.addEventListener("click", () => vote("B"));
+btnNewPair.addEventListener("click", newDuel);
+btnShowTop.addEventListener("click", renderTop);
+
+btnReset.addEventListener("click", () => {
+  if (!confirm("¿Borrar rankings y votos?")) return;
+  state = defaultState();
+  saveState();
+  renderTop();
+  newDuel();
+});
+
+segmentSelect.addEventListener("change", () => {
+  renderTop();
+  refreshQuestion();
+});
+
+contextSelect.addEventListener("change", () => {
+  renderTop();
+  refreshQuestion();
+});
+
+// =====================
+// INIT
+// =====================
+
+newDuel();
+renderTop();
+refreshQuestion();
