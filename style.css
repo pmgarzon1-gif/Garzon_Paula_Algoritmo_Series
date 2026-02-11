@@ -227,3 +227,13 @@ button {
   color: var(--muted);
   font-size: 0.8rem;
 }
+/* Texto de las series en el duelo */
+
+.pick {
+  color: white;
+}
+
+.pick .title {
+  color: white;
+  font-weight: 600;
+}
