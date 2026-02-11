@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SeriesMash — Ranking de Series</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+<header class="wrap">
+  <h1>🎬 SeriesMash</h1>
+  <p class="sub">Comparación A/B para construir rankings personalizados de series.</p>
+</header>
+
+<main class="wrap grid">
+
+  <section class="card">
+    <h2>1) Configura</h2>
+
+    <label>Perfil del espectador</label>
+    <select id="segmentSelect"></select>
+
+    <label>Contexto</label>
+    <select id="contextSelect"></select>
+
+    <div class="row">
+      <button id="btnNewPair" class="ghost">🔁 Nuevo duelo</button>
+      <button id="btnReset" class="danger">🧹 Reiniciar</button>
+    </div>
+
+    <p class="hint">Cada perfil y contexto genera un ranking distinto.</p>
+  </section>
+
+  <section class="card">
+    <h2>2) Vota</h2>
+    <p id="question" class="question">—</p>
+
+    <div class="duel">
+      <button id="btnA" class="pick">
+        <span class="tag">A</span>
+        <span id="labelA" class="title">—</span>
+      </button>
+
+      <button id="btnB" class="pick">
+        <span class="tag">B</span>
+        <span id="labelB" class="title">—</span>
+      </button>
+    </div>
+
+    <div class="row">
+      <button id="btnExport" class="ghost">⬇️ Exportar votos (CSV)</button>
+      <button id="btnShowTop" class="primary">🏁 Ver Top 10</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>3) Ranking (Top 10)</h2>
+    <div id="topBox" class="topbox"></div>
+  </section>
+
+</main>
+
+<footer class="wrap foot">
+  <small>Algoritmo A/B + Elo aplicado a entretenimiento.</small>
+</footer>
+
+<script src="app.js"></script>
+
+</body>
+</html>
