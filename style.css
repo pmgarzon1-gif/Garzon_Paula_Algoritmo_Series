@@ -1,18 +1,22 @@
 :root {
-  --bg: #000000;
-  --card: #0e0e0e;
-  --card2: #151515;
-  --border: #1f1f1f;
+  --bg: #0b0f1a;
+  --card: #121829;
+  --card2: #1a2238;
+  --border: #1f2a44;
   --text: #ffffff;
-  --muted: #8a8a8a;
-  --accent: #ff7a00;
+  --muted: #9aa4c7;
+
+  --primary: #e50914;     /* rojo streaming */
+  --electric: #00e5ff;    /* azul eléctrico */
+  --neon: #9d4edd;        /* morado neón */
+  --highlight: #ffd60a;   /* amarillo spotlight */
 
   font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 }
 
 body {
   margin: 0;
-  background: var(--bg);
+  background: radial-gradient(circle at top, #141b34 0%, #0b0f1a 60%);
   color: var(--text);
 }
 
@@ -25,7 +29,10 @@ body {
 }
 
 h1 {
-  font-size: 1.9rem;
+  font-size: 2rem;
+  background: linear-gradient(90deg, var(--primary), var(--neon));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 5px;
 }
 
@@ -41,24 +48,25 @@ h1 {
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 20px;
+  gap: 22px;
 }
 
 /* =========================
-   CARDS CON BORDES SUAVES
+   CARDS SUAVES + GLOW
    ========================= */
 
 .card {
-  background: var(--card);
+  background: linear-gradient(145deg, #121829, #0f1424);
   border: 1px solid var(--border);
-  border-radius: 18px; /* borde más suave */
+  border-radius: 20px;
   padding: 22px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.6);
-  transition: 0.2s ease;
+  box-shadow: 0 0 20px rgba(157,78,221,.15);
+  transition: 0.3s ease;
 }
 
 .card:hover {
-  border-color: var(--accent);
+  box-shadow: 0 0 30px rgba(0,229,255,.25);
+  border-color: var(--electric);
 }
 
 /* =========================
@@ -68,23 +76,26 @@ h1 {
 label {
   display: block;
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--electric);
   margin-top: 15px;
+  font-weight: 600;
 }
 
 select {
   width: 100%;
-  padding: 9px;
+  padding: 10px;
   margin-top: 6px;
   background: var(--card2);
   border: 1px solid var(--border);
   color: var(--text);
-  border-radius: 10px;
+  border-radius: 12px;
   outline: none;
+  transition: 0.2s ease;
 }
 
 select:focus {
-  border-color: var(--accent);
+  border-color: var(--neon);
+  box-shadow: 0 0 10px rgba(157,78,221,.5);
 }
 
 /* =========================
@@ -92,29 +103,40 @@ select:focus {
    ========================= */
 
 button {
-  padding: 8px 12px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--card2);
-  color: var(--text);
+  padding: 9px 14px;
+  border-radius: 12px;
+  border: none;
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 600;
   transition: 0.2s ease;
 }
 
-button:hover {
-  border-color: var(--accent);
+.primary {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 0 15px rgba(229,9,20,.6);
 }
 
-.primary {
-  background: var(--accent);
+.primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(229,9,20,.9);
+}
+
+.ghost {
+  background: transparent;
+  border: 1px solid var(--electric);
+  color: var(--electric);
+}
+
+.ghost:hover {
+  background: var(--electric);
   color: black;
-  border: none;
 }
 
 .danger {
-  background: #b32121;
-  border: none;
+  background: #ff0054;
+  color: white;
 }
 
 .row {
@@ -131,33 +153,38 @@ button:hover {
 .question {
   font-size: 0.9rem;
   margin-bottom: 12px;
+  color: var(--highlight);
 }
 
 .duel {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .pick {
   flex: 1;
-  padding: 14px;
+  padding: 16px;
   background: var(--card2);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 14px;
   text-align: center;
   font-size: 0.9rem;
-  transition: 0.2s ease;
+  transition: 0.25s ease;
+  position: relative;
 }
 
 .pick:hover {
-  border-color: var(--accent);
+  transform: translateY(-4px);
+  border-color: var(--electric);
+  box-shadow: 0 0 20px rgba(0,229,255,.4);
 }
 
 .tag {
   display: block;
   font-weight: bold;
-  color: var(--accent);
-  margin-bottom: 5px;
+  color: var(--primary);
+  margin-bottom: 6px;
+  font-size: 0.9rem;
 }
 
 /* =========================
@@ -172,9 +199,14 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 0;
-  font-size: 0.85rem;  /* más compacto */
+  padding: 7px 0;
+  font-size: 0.85rem;
   border-bottom: 1px solid var(--border);
+  transition: 0.2s ease;
+}
+
+.toprow:hover {
+  background: rgba(0,229,255,.08);
 }
 
 .toprow:last-child {
@@ -182,7 +214,7 @@ button:hover {
 }
 
 .toprow b {
-  color: var(--accent);
+  color: var(--highlight);
 }
 
 /* =========================
