@@ -198,3 +198,33 @@ btnReset.addEventListener("click", () => {
 newDuel();
 renderTop();
 refreshQuestion();
+btnExport.addEventListener("click", () => {
+
+  if (state.votes.length === 0){
+    alert("Aún no hay votos para exportar.");
+    return;
+  }
+
+  const headers = ["ts","segmento","contexto","A","B","ganador"];
+  const lines = [headers.join(",")];
+
+  for (const v of state.votes){
+    const row = headers.map(h => {
+      const val = String(v[h] ?? "").replaceAll('"','""');
+      return `"${val}"`;
+    }).join(",");
+    lines.push(row);
+  }
+
+  const blob = new Blob([lines.join("\n")], {type: "text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "seriesmash_base_de_datos.csv";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  URL.revokeObjectURL(url);
+});
